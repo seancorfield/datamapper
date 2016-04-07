@@ -109,24 +109,6 @@ component {
 	}
 	
 	
-    public any function get( string propertyName ) {
-        if ( find( ",", propertyName ) ) {
-            // get(a,b) == get(a) get(b)
-            var n = listLen( propertyName );
-            var v = "";
-            for ( var i = 1; i <= n; ++i ) {
-                v = listAppend( v, this.get( listGetAt( propertyName, i ) ), " " );
-            }
-            return v;
-        }
-        if ( structKeyExists( this, "get" & propertyName ) ) {
-            return this[ "get" & propertyName]();
-        } else {
-            return _get( propertyName );
-        }
-    }
-
-
 	public any function _get( string propertyName ) {
 		if ( variables.isDirty && structKeyExists( variables.dirty, propertyName ) ) {
 			return variables.dirty[ propertyName ];
@@ -190,15 +172,6 @@ component {
 	}
 	
 	
-    public boolean function has( string propertyName ) {
-        if ( structKeyExists( this, "has" & propertyName ) ) {
-            return this[ "has" & propertyName ]();
-        } else {
-            return _has( propertyName );
-        }
-    }
-
-
 	public boolean function _has( string propertyName ) {
 		return structKeyExists( variables.dirty, propertyName ) || structKeyExists( variables.data, propertyName );
 	}
@@ -288,15 +261,6 @@ component {
 	}
 	
 	
-    public any function set( string propertyName, any value ) {
-        if ( structKeyExists( this, "set" & propertyName ) ) {
-            return this[ "set" & propertyName ]( value );
-        } else {
-            return _set( propertyName, value );
-        }
-    }
-
-
 	public any function _set( string propertyName, any value ) {
 		variables.dirty[ propertyName ] = value;
 		variables.isDirty = true;
